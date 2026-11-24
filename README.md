@@ -19,8 +19,9 @@ npm run dev        # http://localhost:5173
 
 - **One file:** `npm run build:single` writes `dist-single/index.html`, a single 130 KB file with
   everything inside. Double-click it, attach it to an email, or put it on any file share.
-- **A link, automatically:** push this repo to GitHub, then Settings -> Pages -> Source: "GitHub Actions".
-  `.github/workflows/deploy.yml` publishes the game at `https://<user>.github.io/<repo>/` on every push.
+- **A link on GitHub:** in this repo go to Settings -> Pages -> Source: "GitHub Actions", then open the
+  Actions tab, pick "Deploy to GitHub Pages" and press "Run workflow". The game is then live at
+  `https://<user>.github.io/<repo>/`.
 - **A link, in 30 seconds:** drag the `dist/` folder onto https://app.netlify.com/drop
 
 ## Build and deploy
