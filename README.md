@@ -6,6 +6,8 @@ factory's daily production target, and burn as little gas as possible.
 
 Built with Vue 3 + TypeScript + Vite. No backend, no runtime dependencies beyond Vue.
 
+![Grid Balancer: a balance scale in front of a live weather scene, with sliders for factory, battery and gas](assets/screenshot.jpg)
+
 ## Run it
 
 ```bash
