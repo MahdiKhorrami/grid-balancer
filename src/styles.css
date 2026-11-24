@@ -1,0 +1,464 @@
+:root {
+  color-scheme: light;
+  --outline: #1f2a44;
+  --ink: #1f2a44;
+  --muted: #5b6b8c;
+  --sky: #cfeaff;
+  --panel: #ffffff;
+  --line: #d8e2f2;
+  --track: #dbe4f3;
+
+  --solar: #ffc233;
+  --wind: #52c7ff;
+  --gas: #ff7a59;
+  --battery: #b58cff;
+  --factory: #4fe0a0;
+  --ok: #34d27b;
+
+  --sans: ui-rounded, 'SF Pro Rounded', 'Nunito', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(180deg, var(--page-top, #8fd3ff) 0%, var(--page-bot, #e9f6ff) 100%);
+}
+
+/* ---------- layout: everything fits one screen, no scrolling ---------- */
+.app {
+  height: 100dvh;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+.layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 12px;
+}
+.left {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) clamp(96px, 20%, 150px);
+  gap: 10px;
+}
+.right {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  align-content: start;
+}
+
+.card {
+  background: var(--panel);
+  border: 3px solid var(--outline);
+  border-radius: 22px;
+  box-shadow: 0 5px 0 var(--outline);
+  padding: 12px 14px;
+  min-height: 0;
+}
+.scalecard {
+  position: relative;
+  overflow: hidden; /* the weather scene is clipped to the card */
+  background: var(--page-bot, #cfeaff);
+  padding: 8px 14px 12px;
+}
+.sound {
+  position: absolute;
+  z-index: 3;
+  left: 12px;
+  bottom: 12px;
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
+}
+.timeline {
+  padding: 6px 10px 4px;
+}
+
+/* ---------- header ---------- */
+.top {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px 24px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  letter-spacing: 0.01em;
+  -webkit-text-stroke: 0.5px var(--outline);
+}
+.logo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  font-size: 1.3rem;
+  background: var(--solar);
+  border: 3px solid var(--outline);
+  border-radius: 12px;
+  box-shadow: 0 3px 0 var(--outline);
+}
+.clock {
+  display: grid;
+  gap: 4px;
+  min-width: 190px;
+}
+.time {
+  font: 900 1.5rem/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+.bar {
+  height: 12px;
+  border-radius: 99px;
+  background: #fff;
+  border: 3px solid var(--outline);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  background: var(--solar);
+}
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  appearance: none;
+  border: 3px solid var(--outline);
+  background: #fff;
+  color: var(--ink);
+  font: 900 0.95rem var(--sans);
+  letter-spacing: 0;
+  padding: 7px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--outline);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+}
+.btn:hover {
+  background: #f4f8ff;
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--outline);
+}
+.btn:focus-visible,
+.seg button:focus-visible {
+  outline: 3px solid var(--wind);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.btn.primary {
+  background: var(--solar);
+}
+.btn.primary:hover {
+  background: #ffcf5c;
+}
+.btn.big {
+  padding: 11px 22px;
+  font-size: 1.05rem;
+}
+.btn.round {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+.seg {
+  display: inline-flex;
+  border: 3px solid var(--outline);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 0 var(--outline);
+}
+.seg button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 900 0.9rem var(--sans);
+  padding: 7px 11px;
+  cursor: pointer;
+}
+.seg button + button {
+  border-left: 3px solid var(--outline);
+}
+.seg button.on {
+  background: var(--wind);
+  color: var(--ink);
+}
+
+/* ---------- weather banner ---------- */
+.weather {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 38px;
+}
+.wchip {
+  font-weight: 900;
+  font-size: 0.92rem;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 3px solid var(--outline);
+  background: #fff;
+  box-shadow: 0 3px 0 var(--outline);
+}
+.wchip.cloud {
+  background: #ffe9a8;
+}
+.wchip.lull {
+  background: #e6e9f0;
+}
+.wchip.gust {
+  background: #c9ecff;
+}
+.wchip.active {
+  animation: wiggle 0.9s ease-in-out infinite;
+}
+@keyframes wiggle {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------- speech bubble ---------- */
+.bubble {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 2;
+  max-width: min(46%, 280px);
+  margin: 0;
+  padding: 7px 12px;
+  background: #fff7d6;
+  border: 3px solid var(--outline);
+  border-radius: 16px 16px 4px 16px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  line-height: 1.25;
+  animation: pop 0.25s ease-out;
+}
+.bubble.bad {
+  background: #ffd9d1;
+}
+.bubble.info {
+  background: #e3f3ff;
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* ---------- controls ---------- */
+.controls {
+  display: grid;
+  gap: 12px;
+}
+
+/* ---------- goals ---------- */
+.goals {
+  display: grid;
+  gap: 9px;
+}
+.goal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gi {
+  font-size: 1.35rem;
+  width: 28px;
+  text-align: center;
+}
+.gb {
+  flex: 1;
+  min-width: 0;
+}
+.gh {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.86rem;
+  margin-bottom: 3px;
+}
+.gh span {
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.meter {
+  height: 16px;
+  border-radius: 99px;
+  background: var(--track);
+  border: 3px solid var(--outline);
+  overflow: hidden;
+}
+.meter i {
+  display: block;
+  height: 100%;
+  transition: width 0.12s linear;
+}
+.m-ok {
+  background: var(--ok);
+}
+.m-fac {
+  background: var(--factory);
+}
+.m-bat {
+  background: var(--battery);
+}
+.m-bat.low {
+  background: var(--gas);
+}
+.gas {
+  margin: 2px 0 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.gas span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ---------- shared bits (result card, tour) ---------- */
+.muted {
+  color: var(--muted);
+}
+.eyebrow {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- smaller screens ---------- */
+@media (max-width: 880px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .left {
+    grid-template-rows: auto minmax(0, 1fr) 84px;
+  }
+  .right {
+    grid-template-rows: auto;
+  }
+  .goals {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+  }
+  .goals .goal {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+  .goals .gi,
+  .goals .gas {
+    display: none;
+  }
+  .top {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px 12px;
+  }
+  .tools .seg {
+    display: none;
+  }
+}
+@media (max-width: 880px) and (max-height: 800px) {
+  .caption {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .app {
+    padding: 8px;
+    gap: 8px;
+  }
+  .brand h1 {
+    display: none;
+  }
+  .clock {
+    min-width: 0;
+  }
+  .card {
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+  .scalecard {
+    padding-top: 40px;
+  }
+  .bubble {
+    top: 6px;
+    left: 8px;
+    right: 8px;
+    max-width: none;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .weather {
+    min-height: 0;
+  }
+  .wchip {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+  }
+}
+@media (max-height: 700px) and (min-width: 881px) {
+  .controls {
+    gap: 6px;
+  }
+  .caption {
+    display: none;
+  }
+  .goals {
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wchip.active,
+  .bubble {
+    animation: none;
+  }
+  .btn,
+  .meter i {
+    transition: none;
+  }
+}

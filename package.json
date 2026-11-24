@@ -1,0 +1,23 @@
+{
+  "name": "grid-balancer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "check": "node --experimental-strip-types scripts/sim-check.ts",
+    "build:single": "vue-tsc --noEmit && vite build --mode single --outDir dist-single"
+  },
+  "dependencies": {
+    "vue": "^3.5.46"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.11",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.8",
+    "vite-plugin-singlefile": "^2.3.4",
+    "vue-tsc": "^3.3.14"
+  }
+}
